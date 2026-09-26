@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>NextStep · Agent Ops Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">NextStep</div>
+        <div class="brand-sub">AGENT OPS CONSOLE</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="pill" id="pill-provider">provider: —</span>
+      <span class="pill" id="pill-tools">tools: 6 available</span>
+      <span class="status-dot" id="status-dot" title="server status">●</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- LEFT: input + safety + assessment -->
+    <section class="col col-left">
+      <div class="pane">
+        <div class="pane-h">
+          <span class="mono-label">01</span>
+          <h2>Input</h2>
+        </div>
+        <textarea id="input" rows="5" placeholder="Describe a situation. Try 'email my manager that I need Friday off' or click a preset →"></textarea>
+        <div class="preset-row">
+          <button class="chip" data-preset="planning">planning</button>
+          <button class="chip" data-preset="draft">draft message</button>
+          <button class="chip" data-preset="atrisk">at-risk</button>
+          <button class="chip" data-preset="harmful">harmful</button>
+          <button class="chip" data-preset="injection">injection</button>
+          <button class="chip" data-preset="worse">worse-after-action</button>
+        </div>
+        <div class="run-row">
+          <button id="btn-run" class="btn-run">
+            <span>RUN AGENT</span>
+            <span class="btn-icon">▶</span>
+          </button>
+          <span id="run-status" class="mono-status"></span>
+        </div>
+      </div>
+
+      <div class="pane">
+        <div class="pane-h">
+          <span class="mono-label">02</span>
+          <h2>Safety pre-pass</h2>
+          <span class="hint">runs BEFORE reasoning</span>
+        </div>
+        <div class="safety-grid" id="safety-grid">
+          <div class="safety-item" data-key="at_risk"><span class="dot"></span>at-risk</div>
+          <div class="safety-item" data-key="injection"><span class="dot"></span>injection</div>
+          <div class="safety-item" data-key="harmful"><span class="dot"></span>harmful</div>
+          <div class="safety-item" data-key="off_topic"><span class="dot"></span>off-topic</div>
+        </div>
+      </div>
+
+      <div class="pane">
+        <div class="pane-h">
+          <span class="mono-label">03</span>
+          <h2>Assessment</h2>
+          <span class="hint" id="asmt-meta"></span>
+        </div>
+        <div id="asmt-body" class="asmt-body">
+          <p class="placeholder">— run the agent to populate —</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MIDDLE: planned actions + confirmation -->
+    <section class="col col-mid">
+      <div class="pane pane-actions">
+        <div class="pane-h">
+          <span class="mono-label">04</span>
+          <h2>Planned actions</h2>
+          <span class="hint">reversibility · blast radius</span>
+        </div>
+
+        <div class="tier-legend">
+          <span class="tier tier-silent"><span class="tier-dot"></span>silent · auto-run</span>
+          <span class="tier tier-batch"><span class="tier-dot"></span>batch · one summary tap</span>
+          <span class="tier tier-confirm"><span class="tier-dot"></span>confirm · irreversible</span>
+          <span class="tier tier-block"><span class="tier-dot"></span>block · refused</span>
+        </div>
+
+        <div id="actions-list" class="actions-list">
+          <p class="placeholder">— nothing planned yet —</p>
+        </div>
+      </div>
+
+      <div class="pane">
+        <div class="pane-h">
+          <span class="mono-label">05</span>
+          <h2>Executed ledger</h2>
+          <span class="hint">append-only · content-hash idempotency</span>
+        </div>
+        <div id="ledger-body" class="ledger-body">
+          <p class="placeholder">— no actions executed —</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: full trace timeline -->
+    <section class="col col-right">
+      <div class="pane pane-trace">
+        <div class="pane-h">
+          <span class="mono-label">06</span>
+          <h2>Trace</h2>
+          <span class="hint">labelled agent loop steps</span>
+        </div>
+        <ol id="trace" class="trace">
+          <li class="placeholder">— trace populates after RUN AGENT —</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <script src="/samples.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
