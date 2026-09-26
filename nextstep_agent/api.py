@@ -36,10 +36,18 @@ _agent = Agent()
 # and /tmp doesn't persist across cold starts. Locally we use ./data/.
 # For a production deployment we'd swap this for Redis or Postgres.
 import os as _os
-_LEDGER_PATH = (
-    "/tmp/nextstep_ledger.jsonl" if _os.getenv("VERCEL") else "./data/ledger.jsonl"
+_IS_SERVERLESS = any(_os.getenv(k) for k in (
+    "VERCEL", "VERCEL_URL", "VERCEL_ENV",
+    "AWS_LAMBDA_FUNCTION_NAME", "LAMBDA_TASK_ROOT",
+))
+_LEDGER_PATH = _os.getenv("NEXTSTEP_LEDGER_PATH") or (
+    "/tmp/nextstep_ledger.jsonl" if _IS_SERVERLESS else "./data/ledger.jsonl"
 )
-_ledger = Ledger(_LEDGER_PATH)
+try:
+    _ledger = Ledger(_LEDGER_PATH)
+except (OSError, PermissionError):
+    # Read-only filesystem, fall back to /tmp unconditionally
+    _ledger = Ledger("/tmp/nextstep_ledger.jsonl")
 _agent.ledger = _ledger      # keep the agent's ledger in sync with ours
 
 # In-memory idempotency cache. Prod: Redis with TTL.
