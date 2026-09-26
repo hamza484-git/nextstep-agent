@@ -1,0 +1,112 @@
+Vercel CLI 60.1.3 (Node.js 22.13.0)
+x unknown or unexpected option: --output
+  Vercel CLI 60.1.3 accepts: --api, --branch, --cwd, --debug, --deployment, --environment, --expand, --follow, --global-config, --help, --json, --level, --limit, --local-config, --no-branch, --no-color, --no-follow, --non-interactive, --project, --query, --request-id, --scope, --search, --since, --source, --status-code, --team, --token, --until, --version.
+
+  ▲ vercel logs [url|deploymentId] [options]
+
+  Display request logs for a project.                                           
+  Use --follow to stream live runtime logs from a deployment. By default,       
+  --follow prefers the active production deployment and falls back to your      
+  latest READY deployment.                                                      
+  Source types: λ = serverless, ε = edge/middleware, ◇ = static/external        
+
+  Options:
+
+  -b,  --branch                Filter by Git branch; with --follow, require a   
+                               matching READY deployment                        
+  -d,  --deployment            Filter logs to a specific deployment ID or URL   
+                               (alternative to positional argument)             
+       --environment           Filter by environment: production or preview;    
+                               with --follow, select the active production      
+                               deployment or your latest preview deployment     
+  -x,  --expand                Show full log message below each request line    
+                               (default when output is not a TTY)               
+  -f,  --follow                Stream live runtime logs from a deployment       
+  -j,  --json                  Output logs as JSON Lines for piping to other    
+                               tools                                            
+       --level                 Filter by log level: error, warning, info, fatal 
+  -n,  --limit                 Maximum number of results (default: 100)         
+       --no-follow             No-op; deployment arguments only stream logs when
+                               --follow is set                                  
+  -p,  --project <NAME_OR_ID>  Project name or ID (defaults to the linked       
+                               project)                                         
+  -q,  --query                 Advanced search query (supports filter syntax,   
+                               e.g. "status:500 error")                         
+       --request-id            Filter by request ID                             
+       --since                 Start time (ISO format or relative: 1h, 30m)     
+       --source                Filter by source: serverless, edge-function,     
+                               edge-middleware, static                          
+       --status-code           Filter by HTTP status code (e.g., 500, 4xx)      
+       --until                 End time (ISO format or relative, default: now)  
+
+
+  Global Options:
+
+       --cwd <DIR>            Sets the current working directory for a single   
+                              run of a command                                  
+  -d,  --debug                Debug mode (default off)                          
+  -Q,  --global-config <DIR>  Path to the global `.vercel` directory            
+  -h,  --help                 Output usage information                          
+  -A,  --local-config <FILE>  Path to the local `vercel.json` file              
+       --no-color             No color mode (default off)                       
+       --non-interactive      Run without interactive prompts; when an agent is 
+                              detected this is the default                      
+  -S,  --scope                Set a custom scope                                
+  -t,  --token <TOKEN>        Login token                                       
+  -v,  --version              Output the version number                         
+
+
+  Examples:
+
+  - Display recent request logs for the linked project
+
+    $ vercel logs
+
+  - Display request logs for a specific project
+
+    $ vercel logs --project my-app
+
+  - Display request error logs from the last hour
+
+    $ vercel logs --level error --since 1h
+
+  - Display request logs for a specific deployment
+
+    $ vercel logs dpl_xxxxx
+
+  - Filter request logs by status code and output as JSON
+
+    $ vercel logs --status-code 500 --json
+
+  - Search request logs by status and message
+
+    $ vercel logs --query 'status:500 error' --json | jq '.message'
+
+  - Display request logs from production
+
+    $ vercel logs --environment production
+
+  - Display request logs for a specific request
+
+    $ vercel logs --request-id req_xxxxx
+
+  - Display request logs with full message details
+
+    $ vercel logs --expand
+
+  - Display request logs for a specific branch
+
+    $ vercel logs --branch feature-x
+
+  - Stream runtime logs for the active production deployment
+
+    $ vercel logs --follow
+
+  - Stream runtime logs for your latest preview deployment
+
+    $ vercel logs --follow --environment preview
+
+  - Stream runtime logs for a specific deployment
+
+    $ vercel logs dpl_xxxxx --follow
+

@@ -6,6 +6,8 @@
 
 An agent that turns messy real-life input into a structured plan, proposes tool-backed actions, and knows the difference between *thinking about doing something* and *actually doing it*.
 
+**Live URL:** [https://nextstep-agent.vercel.app](https://nextstep-agent.vercel.app)
+
 ---
 
 ## TL;DR — what makes this submission different

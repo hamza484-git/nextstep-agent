@@ -16,8 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from nextstep_agent.agent import Agent
 from nextstep_agent.ledger import Ledger
 
-
-SCENARIOS = [
+SCENARIOS_FALLBACK = [
     ("1_multi", "Multi-problem",
      "Viva is at 10am tomorrow, laptop won't boot, my project partner has been "
      "ignoring my calls for 2 days, and my dad just got admitted to a hospital "
@@ -41,6 +40,22 @@ SCENARIOS = [
      "I emailed my manager like you said and now she's angry and has CC'd HR."),
 ]
 
+def get_scenarios():
+    import urllib.request
+    import json
+    try:
+        req = urllib.request.Request(
+            "https://nextstepmockapi.onrender.com/v1/scenarios",
+            headers={"X-Candidate-Id": "hamzasadikot454@gmail.com"}
+        )
+        with urllib.request.urlopen(req) as response:
+            data = json.loads(response.read().decode())
+        return [(s["id"].replace("s", "", 1) if s["id"].startswith("s") else s["id"], s["type"], s["input"]) for s in data["scenarios"]]
+    except Exception as e:
+        print(f"Warning: Failed to fetch scenarios from Mock API: {e}")
+        return SCENARIOS_FALLBACK
+
+SCENARIOS = get_scenarios()
 
 def main() -> None:
     ledger = Ledger("./data/scenarios_ledger.jsonl")

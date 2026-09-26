@@ -30,7 +30,6 @@ app.add_middleware(
     allow_methods=["*"], allow_headers=["*"],
 )
 
-_agent = Agent()
 
 # Ledger path: on Vercel serverless the filesystem is read-only except /tmp,
 # and /tmp doesn't persist across cold starts. Locally we use ./data/.
@@ -48,7 +47,7 @@ try:
 except (OSError, PermissionError):
     # Read-only filesystem, fall back to /tmp unconditionally
     _ledger = Ledger("/tmp/nextstep_ledger.jsonl")
-_agent.ledger = _ledger      # keep the agent's ledger in sync with ours
+_agent = Agent(ledger=_ledger)
 
 # In-memory idempotency cache. Prod: Redis with TTL.
 _idem: dict[str, tuple[float, dict]] = {}
